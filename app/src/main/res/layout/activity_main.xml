@@ -9,6 +9,8 @@
         android:id="@+id/editText"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:nextFocusDown="@id/buttonAddTag"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 

@@ -9,7 +9,6 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import kotlin.math.max
 
@@ -28,6 +27,10 @@ class TagLayout(
     private var mVerticalPadding: Float = 0F
     private var mTagMargin: Float = 0F
     private var mBackground: GradientDrawable? = null
+    private var mBackgroundColor: Int
+    private var mBackgroundBorderColor: Int
+    private var mBackgroundBorderWidth: Float
+    private var mBackgroundCornerRadius: Float
 
     //Constructor **********************************************************************************
     constructor(context: Context, attrs: AttributeSet) : this(context, attrs, 0)
@@ -65,30 +68,26 @@ class TagLayout(
             R.styleable.TagLayout_tl_tag_margin, 0F
         )
 
-        val backgroundColor = typedArray.getColor(
+        mBackgroundColor = typedArray.getColor(
             R.styleable.TagLayout_tl_background_color,
             Color.WHITE
         )
-        val backgroundBorderColor = typedArray.getColor(
+        mBackgroundBorderColor = typedArray.getColor(
             R.styleable.TagLayout_tl_background_border_color,
             Color.BLACK
         )
-        val backgroundBorderWidth = typedArray.getDimension(
+        mBackgroundBorderWidth = typedArray.getDimension(
             R.styleable.TagLayout_tl_background_border_width,
             0F
         )
-        val backgroundCornerRadius = typedArray.getDimension(
+        mBackgroundCornerRadius = typedArray.getDimension(
             R.styleable.TagLayout_tl_background_corner_radius,
             0F
         )
 
-        mBackground = ContextCompat.getDrawable(
-            context, R.drawable.tag_background
-        ) as GradientDrawable
-
-        mBackground?.setColor(backgroundColor)
-        mBackground?.setStroke(backgroundBorderWidth.toInt(), backgroundBorderColor)
-        mBackground?.cornerRadius = backgroundCornerRadius
+        mBackground?.setColor(mBackgroundColor)
+        mBackground?.setStroke(mBackgroundBorderWidth.toInt(), mBackgroundBorderColor)
+        mBackground?.cornerRadius = mBackgroundCornerRadius
 
         typedArray.recycle()
 
@@ -106,17 +105,17 @@ class TagLayout(
         var totalHeight = 0
         var heightMax = 0
 
-        mTextViewList.forEach { fontTextView: TextView ->
-            fontTextView.measure(unspecifiedMeasureSpec, unspecifiedMeasureSpec)
+        mTextViewList.forEach { textView: TextView ->
+            textView.measure(unspecifiedMeasureSpec, unspecifiedMeasureSpec)
 
-            if (fontTextView.measuredWidth + widthSum > widthSize) {
+            if (textView.measuredWidth + widthSum > widthSize) {
                 widthSum = 0
                 totalHeight += heightMax + mTagMargin.toInt()
                 heightMax = 0
             }
 
-            widthSum += fontTextView.measuredWidth + mTagMargin.toInt()
-            heightMax = max(heightMax, fontTextView.measuredHeight)
+            widthSum += textView.measuredWidth + mTagMargin.toInt()
+            heightMax = max(heightMax, textView.measuredHeight)
         }
 
         totalHeight += heightMax
@@ -136,26 +135,26 @@ class TagLayout(
         var widthSum = 0
         var heightMax = 0
         var currentTop = 0
-        var currentRight = width
+        var currentLeft = 0
 
-        mTextViewList.forEach { fontTextView: TextView ->
-            if (fontTextView.measuredWidth + widthSum > width) {
+        mTextViewList.forEach { textView: TextView ->
+            if (textView.measuredWidth + widthSum > width) {
                 widthSum = 0
-                currentRight = width
+                currentLeft = 0
                 currentTop += heightMax + mTagMargin.toInt()
                 heightMax = 0
             }
 
-            fontTextView.layout(
-                currentRight - fontTextView.measuredWidth,
+            textView.layout(
+                currentLeft,
                 currentTop,
-                currentRight,
-                currentTop + fontTextView.measuredHeight
+                currentLeft + textView.measuredWidth,
+                currentTop + textView.measuredHeight
             )
 
-            currentRight -= fontTextView.measuredWidth + mTagMargin.toInt()
-            widthSum += fontTextView.measuredWidth + mTagMargin.toInt()
-            heightMax = max(heightMax, fontTextView.measuredHeight)
+            currentLeft += textView.measuredWidth + mTagMargin.toInt()
+            widthSum += textView.measuredWidth + mTagMargin.toInt()
+            heightMax = max(heightMax, textView.measuredHeight)
         }
 
     }
@@ -179,9 +178,6 @@ class TagLayout(
             text = tag
             setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize)
             setTextColor(mTextColor)
-            if (mBackground != null) {
-                background = mBackground
-            }
             gravity = Gravity.CENTER
             setPadding(
                 mHorizontalPadding.toInt(),
@@ -189,6 +185,12 @@ class TagLayout(
                 mHorizontalPadding.toInt(),
                 mVerticalPadding.toInt()
             )
+
+            setBackgroundResource(R.drawable.tag_background)
+            val background = background.mutate() as? GradientDrawable
+            background?.setColor(mBackgroundColor)
+            background?.setStroke(mBackgroundBorderWidth.toInt(), mBackgroundBorderColor)
+            background?.cornerRadius = mBackgroundCornerRadius
         }
 
         mTextViewList.add(textView)

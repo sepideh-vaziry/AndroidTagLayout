@@ -17,6 +17,8 @@ class MainActivity : AppCompatActivity() {
 
             if (binding.editText.text.isNotEmpty()) {
                 binding.tagLayout.addTag(binding.editText.text.toString())
+
+                binding.editText.setText("")
             }
 
         }
