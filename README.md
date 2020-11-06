@@ -6,7 +6,7 @@ The TagLayout is a layout with a set of tags. You can use it to tag anything you
 
 # Screenshot
 
-![alt text](https://github.com/sepideh-vaziry/AndroidTagLayout/images/master/tag_demo.png?raw=true)
+![alt text](https://github.com/sepideh-vaziry/AndroidTagLayout/blob/master/images/tag_demo.png?raw=true)
 
 
 # Installation
@@ -49,8 +49,8 @@ Use it in your own code:
 ```
 
 ```kotlin
-tagLayout.setTag("Tag")
-tagLayout.setTag(tagsList)
+tagLayout.addTag("Tag")
+tagLayout.addTags(tagsList)
 ```
 
 # Attributes
