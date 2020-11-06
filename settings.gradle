@@ -1,0 +1,3 @@
+include ':taglib'
+include ':app'
+rootProject.name = "TagLibrary"

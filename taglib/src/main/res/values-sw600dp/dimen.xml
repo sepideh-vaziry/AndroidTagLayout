@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<!-- Common text size -->
+	<dimen name="textsize_normal">14sp</dimen>
+
+	<!-- Tag Background -->
+	<dimen name="tag_background_corner_radius">8dp</dimen>
+	<dimen name="tag_background_border_width">1dp</dimen>
+	
+</resources>

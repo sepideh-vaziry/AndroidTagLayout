@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="TagLayout">
+        <attr name="android:textSize" />
+        <attr name="android:textColor" />
+        <attr name="android:fontFamily" />
+        <attr name="tl_background_color" format="color" />
+        <attr name="tl_background_border_color" format="color" />
+        <attr name="tl_background_border_width" format="dimension" />
+        <attr name="tl_background_corner_radius" format="dimension" />
+        <attr name="tl_horizontal_padding" format="dimension" />
+        <attr name="tl_vertical_padding" format="dimension" />
+        <attr name="tl_tag_margin" format="dimension" />
+    </declare-styleable>
+
+</resources>
